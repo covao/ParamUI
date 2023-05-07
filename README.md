@@ -1,4 +1,4 @@
 # ParamUI
 - Create UI with simple parameter table
-- Simple and universal UI in various programming languages
+- Simple and universal UI
 - Easy UI code generation using ChatGPT
