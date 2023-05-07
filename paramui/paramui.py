@@ -4,7 +4,7 @@
 - Input: ParameterTable, UsrFunc
   - ParameterTable: Containing the following columns  
     PrameterVariable, ParameterLabel, InitialValue, Range(Slider:[Min,Max,Step], Selecter:['A','B'...], FileName:'*.txt;*.doc')
-  - Example: ParameterTable = [['A1','Num 1',[0.5, 0, 1, 0.1]],['F1','Flag 1',True,[]],['S1','Select 1','Two',['One','Two','Three']],['Name','Name 1','Taro',[]],['Run','Run Button',[],[]], ]
+  - Example: ParameterTable = [['A1','Num 1',0.5, [0, 1, 0.1]],['F1','Flag 1',True,[]],['S1','Select 1','Two',['One','Two','Three']],['Name','Name 1','Taro',[]],['Run','Run Button',[],[]], ]
     - Prm structure definition Prm.(ParameterVariable)  
       Example: Prm.A1=12.5, Prm.F1=False, Prm.Text='Taro', Prm.S1='Two', Prm.Run=True  
   - UsrFunc: Function handle Example: UsrFunc = lambda Prm:print(Prm)  
