@@ -9,7 +9,7 @@
       Example: Prm.A1=12.5, Prm.F1=False, Prm.Text='Taro', Prm.S1='Two', Prm.Run=True  
   - UsrFunc: Function handle Example: UsrFunc = lambda Prm:print(Prm)  
 - Usage 1: Run on UI event
-import paramui
+from paramui import paramui
 paramui(ParameterTable, UsrFunc)
 - Usage 2: Loop & get UI parameters  
 pu = paramui(ParameterTable)
