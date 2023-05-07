@@ -6,7 +6,7 @@
     PrameterVariable, ParameterLabel, InitialValue, Range(Slider:[Min,Max,Step], Selecter:['A','B'...], FileName:'*.txt;*.doc')
   - Example: ParameterTable = [['A1','Num 1',0.5, [0, 1, 0.1]],['F1','Flag 1',True,[]],['S1','Select 1','Two',['One','Two','Three']],['Name','Name 1','Taro',[]],['Run','Run Button',[],[]], ]
     - Prm structure definition Prm.(ParameterVariable)  
-      Example: Prm.A1=12.5, Prm.F1=False, Prm.Text='Taro', Prm.S1='Two', Prm.Run=True  
+      Example: Prm.A1=0.5, Prm.F1=False, Prm.Text='Taro', Prm.S1='Two', Prm.Run=True  
   - UsrFunc: Function handle Example: UsrFunc = lambda Prm:print(Prm)  
 - Usage 1: Run on UI event
 from paramui import paramui
@@ -28,10 +28,12 @@ from tkinter import filedialog
 class paramui:
     def close_ui(self):
         self.UsrCloseFunc()
-        if self.ThreadMode:
-            self.root.quit()
-        else:
-            self.root.destroy()
+        self.root.quit()
+        if not self.ThreadMode:
+            try:
+                self.root.destroy()
+            except:
+                pass
         self.IsAlive = False
 
     def __init__(self, parameter_table=[], user_func=[]):
