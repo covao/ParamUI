@@ -6,7 +6,7 @@ setup(
     author='covao, Koichi Koabayshi',
     license='MIT',
     author_email='',
-    url='https://github.com/covao/ParamUI'
+    url='https://github.com/covao/ParamUI',
     description='Create UI from Parameter Table',
     packages=find_packages(),
     python_requires='>=3.7',
@@ -15,6 +15,6 @@ setup(
         'tkinter',
         'threading',
         'types',
-        're',
+        're'
    ]
 )
