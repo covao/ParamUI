@@ -39,6 +39,7 @@ class paramui:
     def __init__(self, parameter_table=[], user_func=[]):
         self.parameter_table = parameter_table
         self.IsAlive = False
+        self.IsUserFunc = False
         self.UserFunc = user_func
         self.UsrCloseFunc = lambda: True
         self.ThreadMode = False
@@ -48,6 +49,8 @@ class paramui:
         self.UIMaxHeight = 600
         self.UIYSpace = 45
 
+        if user_func:
+            self.IsUserFunc = True
         if parameter_table and not user_func:
             self.ThreadMode = True
             def user_func(p): return True
@@ -95,7 +98,8 @@ class paramui:
 
     def on_button_change(self, variable, value):
         self.update_parameter(variable, True)
-        setattr(self.Prm, variable, [])
+        if self.IsUserFunc:
+            setattr(self.Prm, variable, [])
 
     def on_dropdown_change(self, variable, value):
         self.update_parameter(variable, value)
