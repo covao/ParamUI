@@ -12,7 +12,7 @@ ParameterTable = [
     ['Name2', 'Name 2', 'Jiro', []],
     ['File1', 'File 1', '', '*.py;*.txt'],
     ['Folder1', 'Folder 1', '', 'folder'],
-    ['Run', 'Run!', [], []],
+    ['Run', 'Run!', False, 'button'],
 ]
 
 #Define user function
