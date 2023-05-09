@@ -3,8 +3,8 @@
 - Processing: Create UI from ParameterTable, assign UI parts values to Prm structure, call user function
 - Input: ParameterTable, UsrFunc
   - ParameterTable: Containing the following columns  
-    PrameterVariable, ParameterLabel, InitialValue, Range(Slider:[Min,Max,Step], Selecter:['A','B'...], FileName:'*.txt;*.doc')
-  - Example: ParameterTable = [['A1','Num 1',0.5, [0, 1, 0.1]],['F1','Flag 1',True,[]],['S1','Select 1','Two',['One','Two','Three']],['Name','Name 1','Taro',[]],['Run','Run Button',[],[]], ]
+    PrameterVariable, ParameterLabel, InitialValue, Range(Slider:[Min,Max,Step], Selecter:['A','B'...], FileName:'*.txt;*.doc',Button:'button')
+  - Example: ParameterTable = [['A1','Num 1',0.5, [0, 1, 0.1]],['F1','Flag 1',True,[]],['Run','Run!',False,'button'],['S1','Select 1','Two',['One','Two','Three']],['Name','Name 1','Taro',[]], ]
     - Prm structure definition Prm.(ParameterVariable)  
       Example: Prm.A1=0.5, Prm.F1=False, Prm.Text='Taro', Prm.S1='Two', Prm.Run=True  
   - UsrFunc: Function handle Example: UsrFunc = lambda Prm:print(Prm)  
@@ -13,8 +13,9 @@ from paramui import paramui
 paramui(ParameterTable, UsrFunc)
 - Usage 2: Loop & get UI parameters  
 pu = paramui(ParameterTable)
-while pu.IsAlive
-    print(pu.Prm)
+while pu.IsAlive:
+    if pu.Prm.Run
+       print(pu.Prm)
 '''
 
 import tkinter as tk
@@ -59,7 +60,10 @@ class paramui:
                 self.Thread = threading.Thread(
                     target=lambda p=parameter_table, u=user_func: self.create_ui(p, u), daemon=True)
                 self.Thread.start()
+                while not self.IsAlive:
+                    pass
             else:
+                self.IsAlive = True
                 self.create_ui(parameter_table, user_func)
 
     def __del__(self):
@@ -122,7 +126,6 @@ class paramui:
             self.update_parameter(variable, file_path)
 
     def create_ui(self, parameter_table, UserFunc):
-        self.IsAlive = True
         self.parameter_table = parameter_table
         self.UserFunc = UserFunc
         self.root = tk.Tk()
@@ -154,7 +157,7 @@ class paramui:
             if not (isinstance(initial_value, list) and not (initial_value)):
                 l = tk.Label(row, text=label, width=int(18*sc), anchor='w')
                 l.pack(side=tk.LEFT, expand=False)
-            if isinstance(initial_value, (int, float)) and step:
+            if isinstance(initial_value, (int, float)) and isinstance(step, list) and len(step)==3 :
                 min_val, max_val, step_val = step
                 var = tk.DoubleVar(self.root)
                 var.set(initial_value)
@@ -174,12 +177,19 @@ class paramui:
                              step=step_val: self.on_spinbox_change(v, value, slider_var, step))
                 spinbox.pack(side=tk.RIGHT, fill=tk.X)
 
-            elif isinstance(initial_value, bool):
+            elif isinstance(initial_value, bool) and not step:
                 var = tk.BooleanVar(self.root)
                 var.set(initial_value)
                 checkbox = tk.Checkbutton(
                     row, variable=var, command=lambda v=variable, value=var: self.on_checkbox_change(v, value.get()))
                 checkbox.pack(side=tk.LEFT, fill=tk.X, expand=False)
+
+            elif isinstance(initial_value, bool) and step=='button':
+                var = tk.BooleanVar(self.root)
+                var.set(False)
+                button = tk.Button(row, text=label, command=lambda v=variable,
+                                   value=var: self.on_button_change(v, True))
+                button.pack(side=tk.LEFT, fill=tk.X, expand=True)
 
             elif isinstance(initial_value, str) and not (isinstance(step, list) and len(step) > 1):
                 var = tk.StringVar(self.root)
@@ -196,13 +206,6 @@ class paramui:
                                               command=lambda v=variable, entry_var=var, str=step: self.browse_file(v, entry_var, str))
                     browse_button.pack(side=tk.RIGHT, padx=(0, 10))
 
-            elif isinstance(initial_value, list) and not (initial_value):
-                var = tk.BooleanVar(self.root)
-                var.set(False)
-                button = tk.Button(row, text=label, command=lambda v=variable,
-                                   value=var: self.on_button_change(v, True))
-                button.pack(side=tk.LEFT, fill=tk.X, expand=True)
-
             elif isinstance(step, list) and step:
                 var = tk.StringVar(self.root)
                 var.set(initial_value)
@@ -211,4 +214,5 @@ class paramui:
                 dropdown.pack(side=tk.LEFT, fill=tk.X, expand=True)
 
         self.UserFunc(self.Prm)
+        self.IsAlive = True
         self.root.mainloop()
