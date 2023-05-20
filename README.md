@@ -61,3 +61,7 @@ while pu.IsAlive:
 - Generate prompt of UI app using LLM
 Try prompt! e.g. ChatGPT, Bing Chat, Bard  
 [Start Prompt Designer!](https://covao.github.io/ParamUI/html/paramui_prompt_designer.html)
+
+# Related Sites
+- [ParamUI MATLAB](https://github.com/covao/ParamUI_MATLAB)
+
