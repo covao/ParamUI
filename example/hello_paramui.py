@@ -3,7 +3,7 @@ from paramui import paramui
 
 ParameterTable = [
     ['A', 'Parameter A', 0.5, [0, 1, 0.1]],
-    ['B', 'Parameter B This is a pen', 200, [100, 500, 10]],
+    ['B', 'Parameter B', 200, [100, 500, 10]],
     ['F1', 'Flag 1', True, []],
     ['F2', 'Flag 2', False, []],
     ['S1', 'Select 1', 'Two', ['One', 'Two', 'Three']],
