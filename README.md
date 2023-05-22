@@ -1,7 +1,6 @@
 # ParamUI Python  
-- Create UI with simple parameter table
-- Simple and universal UI
-- Easy UI code generation using ChatGPT
+- Create App with UI from simple parameter table
+- Easy code generation using ChatGPT
 
 # Instalation
 ## Method 1
