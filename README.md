@@ -61,6 +61,10 @@ while pu.IsAlive:
 Try prompt! e.g. ChatGPT, Bing Chat, Bard  
 [Start Prompt Designer!](https://covao.github.io/ParamUI/html/paramui_prompt_designer.html)
 
+# Demo
+- Lifegame
+- Mandelblot
+
 # Related Sites
 - [ParamUI MATLAB](https://github.com/covao/ParamUI_MATLAB)
 
