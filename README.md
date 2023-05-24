@@ -13,7 +13,17 @@ pip install git+https://github.com/covao/ParamUI
 - Download [paramui.py](https://github.com/covao/ParamUI/blob/main/paramui/paramui.py) and copy to the folder where you run the python script 
 
 # Usage
-## Define Parameter table
+## Parameter table definition
+Parameter table is containing the following columns  
+- Prameter Variable
+- Parameter Label
+- Initial Value
+- Range 
+  - Slider: [Min,Max,Step],
+  - Selecter: ['A','B'...]
+  - FileName: '*.txt;*.doc'
+  - Button: 'button'
+
 ~~~ python
 # Hello ParamUI
 from paramui import paramui
@@ -35,11 +45,11 @@ ParameterTable = [
 ~~~
 ## Example 1: Click & Run
 ~~~ python
-def usrfunc2(Prm):
+def usrfunc(Prm):
     if not Prm.Run:
         return
     print(Prm)
-paramui(ParameterTable, usrfunc2)
+paramui(ParameterTable, usrfunc)
 
 ~~~
 ## Example 2: Loop & Get Parameters
