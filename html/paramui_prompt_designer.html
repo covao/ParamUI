@@ -195,7 +195,7 @@ paramui(ParameterTable, UsrFunc)
 # Code Template
 ~~~ matlab
 %Loop & get UI parameters  
-PrameterTable = {['A1','Num 1',0.5, [0, 1, 0.1]],['Run','Run!',False,'button']}
+PrameterTable = {'A1','Num 1',0.5, [0, 1, 0.1];'Run','Run!',False,'button'}
 pu = paramui(ParameterTable);
 while pu.IsAlive
     if pu.Prm.Run
