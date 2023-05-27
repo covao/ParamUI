@@ -217,7 +217,6 @@ paramui(ParameterTable, @UsrFunc);
             text3: ``
         };
 
-
         var selector_A = document.getElementById("selector_A");
         var textEdit_A = document.getElementById("textEdit_A");
         var selector_B = document.getElementById("selector_B");
@@ -229,6 +228,12 @@ paramui(ParameterTable, @UsrFunc);
         var selector_L = document.getElementById("selector_L");
         var editbox_All = document.getElementById("editbox_All");
         var copyButton = document.getElementById("copyButton");
+
+        var url = new URL(window.location.href);
+        var params = new URLSearchParams(url.search);
+        if(params.get('lang')=="MATLAB"){
+            selector_L = "MATLAB";
+        }
 
         function updateText() {            
             textEdit_A.value = texts_A[selector_A.value];
