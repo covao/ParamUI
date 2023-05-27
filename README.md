@@ -43,7 +43,7 @@ ParameterTable = [
 ]
 
 ~~~
-## Example 1: Click & Run
+## Example 1: Run on UI event
 ~~~ python
 def usrfunc(Prm):
     if not Prm.Run:
