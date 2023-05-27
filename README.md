@@ -1,3 +1,5 @@
+[Japanese(Google Translate)](https://github-com.translate.goog/covao/ParamUI_MATLAB?_x_tr_sl=en&_x_tr_tl=ja&_x_tr_hl=ja&_x_tr_pto=wapp)
+
 # ParamUI Python  
 - Create App with UI from simple parameter table
 - Easy code generation using ChatGPT
@@ -26,8 +28,6 @@ Parameter table is containing the following columns
 
 ~~~ python
 # Hello ParamUI
-from paramui import paramui
-
 ParameterTable = [
     ['A', 'Parameter A', 0.5, [0, 1, 0.1]],
     ['B', 'Parameter B This is a pen', 200, [100, 500, 10]],
@@ -45,6 +45,7 @@ ParameterTable = [
 ~~~
 ## Example 1: Run on UI event
 ~~~ python
+from paramui import paramui
 def usrfunc(Prm):
     if not Prm.Run:
         return
@@ -54,6 +55,8 @@ paramui(ParameterTable, usrfunc)
 ~~~
 ## Example 2: Loop & Get Parameters
 ~~~ python
+from paramui import paramui
+import time
 pu = paramui(ParameterTable)
 while pu.IsAlive:
     print(pu.Prm)
@@ -66,10 +69,10 @@ while pu.IsAlive:
 
 - [hello_paramui.py](https://github.com/covao/ParamUI/blob/main/example/hello_paramui.py)
 
-# ParamUI Prompt Designer
+# [ParamUI Prompt Designer](https://covao.github.io/ParamUI/html/paramui_prompt_designer.html)
 - Generate prompt of UI app using LLM
 Try prompt! e.g. ChatGPT, Bing Chat, Bard  
-[Start Prompt Designer!](https://covao.github.io/ParamUI/html/paramui_prompt_designer.html)
+[Start ParamUI Prompt Designer](https://covao.github.io/ParamUI/html/paramui_prompt_designer.html)
 
 # Demo
 - Lifegame
