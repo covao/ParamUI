@@ -232,7 +232,7 @@ paramui(ParameterTable, @UsrFunc);
         var url = new URL(window.location.href);
         var params = new URLSearchParams(url.search);
         if(params.get('lang')=="MATLAB"){
-            selector_L = "MATLAB";
+            selector_L.value = "MATLAB";
         }
 
         function updateText() {            
