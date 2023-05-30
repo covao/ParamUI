@@ -12,7 +12,7 @@ pip install git+https://github.com/covao/ParamUI
 
 ~~~
 ## Method 2
-- Download [paramui.py](https://github.com/covao/ParamUI/blob/main/paramui/paramui.py) and copy to the folder where you run the python script 
+- Download [paramui.py](./paramui/paramui.py) and copy to the folder where you run the python script 
 
 # Usage
 ## Parameter table definition
@@ -21,13 +21,15 @@ Parameter table is containing the following columns
 - Parameter Label
 - Initial Value
 - Range 
-  - Slider: [Min,Max,Step],
-  - Selecter: ['A','B'...]
-  - FileName: '*.txt;*.doc'
-  - Button: 'button'
+ - Slider: <code>[Min, Max, Step]</code>
+ - Check Box: <code>[]</code>
+ - Selecter: <code>['A','B'...]</code>
+ - Edit Box: <code>[]</code>
+ - File Selecter: <code> '\*.txt;*.\doc' </code>
+ - Folder Selecter: <code>'folder'</code>
+ - Button: <code>'button'</code>
 
 ~~~ python
-# Hello ParamUI
 ParameterTable = [
     ['A', 'Parameter A', 0.5, [0, 1, 0.1]],
     ['B', 'Parameter B This is a pen', 200, [100, 500, 10]],
@@ -65,9 +67,8 @@ while pu.IsAlive:
 ~~~
 
 ## Hello ParamUI
+- [hello_paramui.py](./example/hello_paramui.py)  
 ![Hello ParamUI](./img/hello_paramui.jpg)
-
-- [hello_paramui.py](https://github.com/covao/ParamUI/blob/main/example/hello_paramui.py)
 
 # [ParamUI Prompt Designer](https://covao.github.io/ParamUI/html/paramui_prompt_designer.html)
 - Generate prompt of UI app using LLM
@@ -75,8 +76,8 @@ Try prompt! e.g. ChatGPT, Bing Chat, Bard
 [Start ParamUI Prompt Designer](https://covao.github.io/ParamUI/html/paramui_prompt_designer.html)
 
 # Demo
-- Lifegame
-- Mandelblot
+- [Lifegame](./example/lifegame_paramui.py)
+- [Mandelblot](./example/mandelbrot_paramui)
 
 # Related Sites
 - [ParamUI MATLAB](https://github.com/covao/ParamUI_MATLAB)
