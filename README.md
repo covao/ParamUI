@@ -77,7 +77,7 @@ Try prompt! e.g. ChatGPT, Bing Chat, Bard
 
 # Demo
 - [Lifegame](./example/lifegame_paramui.py)
-- [Mandelblot](./example/mandelbrot_paramui)
+- [Mandelblot](./example/mandelbrot_paramui.py)
 
 # Related Sites
 - [ParamUI MATLAB](https://github.com/covao/ParamUI_MATLAB)
