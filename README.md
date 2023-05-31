@@ -20,15 +20,14 @@ Parameter table is containing the following columns
 - Prameter Variable
 - Parameter Label
 - Initial Value
-- Range 
- - Slider: <code>[Min, Max, Step]</code>
- - Check Box: <code>[]</code>
- - Selecter: <code>['A','B'...]</code>
- - Edit Box: <code>[]</code>
- - File Selecter: <code> '\*.txt;*.\doc' </code>
- - Folder Selecter: <code>'folder'</code>
- - Button: <code>'button'</code>
-
+- Range  
+  Slider: [Min, Max, Step]  
+  Check Box: []  
+  Selecter: ['A','B']  
+  Edit Box: []  
+  File Selecter: '\*.txt;\*.doc' 
+  Folder Selecter: 'folder'  
+  Button: 'button'  
 ~~~ python
 ParameterTable = [
     ['A', 'Parameter A', 0.5, [0, 1, 0.1]],
@@ -47,7 +46,7 @@ ParameterTable = [
 ~~~
 ## Example 1: Run on UI event
 ~~~ python
-from paramui import paramui
+from paramui import p/caramui
 def usrfunc(Prm):
     if not Prm.Run:
         return
