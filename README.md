@@ -21,13 +21,13 @@ Parameter table is containing the following columns
 - Parameter Label
 - Initial Value
 - Range  
-  Slider: [Min, Max, Step]  
-  Check Box: []  
-  Selecter: ['A','B']  
-  Edit Box: []  
-  File Selecter: '\*.txt;\*.doc' 
-  Folder Selecter: 'folder'  
-  Button: 'button'  
+  - Slider: [Min, Max, Step]  
+  - Check Box: []  
+  - Selecter: ['A','B']  
+  - Edit Box: []  
+  - File Selecter: '\*.txt;\*.doc' 
+  - Folder Selecter: 'folder'  
+  - Button: 'button'  
 ~~~ python
 ParameterTable = [
     ['A', 'Parameter A', 0.5, [0, 1, 0.1]],
