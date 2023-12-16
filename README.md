@@ -65,6 +65,17 @@ while pu.IsAlive:
     
 ~~~
 
+## Example 3:  Do not display UI for debug
+~~~ python
+from paramui import p/caramui
+def usrfunc(Prm):
+    if not Prm.Run:
+        return
+    print(Prm)
+paramui(ParameterTable, usrfunc, False)
+
+~~~
+
 ## Hello ParamUI
 - [hello_paramui.py](./example/hello_paramui.py)  
 ![Hello ParamUI](./img/hello_paramui.jpg)
