@@ -1,5 +1,5 @@
 '''
-# paramui(ParameterTable, UsrFunc)
+# paramui(ParameterTable, UsrFunc, ShowUI)
 - Processing: Create UI from ParameterTable, assign UI parts values to Prm structure, call user function
 - Input: ParameterTable, UsrFunc
   - ParameterTable: Containing the following columns  
@@ -8,6 +8,7 @@
     - Prm structure definition Prm.(ParameterVariable)  
       Example: Prm.A1=0.5, Prm.F1=False, Prm.Text='Taro', Prm.S1='Two', Prm.Run=True  
   - UsrFunc: Function handle Example: UsrFunc = lambda Prm:print(Prm)  
+  - ShowUI: If ShowUI is False, UI is not created.
 - Usage 1: Run on UI event
 from paramui import paramui
 paramui(ParameterTable, UsrFunc)
@@ -18,26 +19,30 @@ while pu.IsAlive:
        print(pu.Prm)
 '''
 
-import tkinter as tk
 import threading
 import types
 import re
 import numpy as np
-from tkinter import filedialog
-
-
+try: # If tkinte is not exist, skip import library
+    import tkinter as tk
+    from tkinter import filedialog
+except ImportError:
+    pass # no_library
+    
 class paramui:
     def close_ui(self):
         self.UsrCloseFunc()
-        self.root.quit()
+        if self.ShowUI:
+            self.root.quit()
         if not self.ThreadMode:
             try:
                 self.root.destroy()
             except:
                 pass
         self.IsAlive = False
+# - show_ui: Optional. If False, does not create a GUI with the tkinter library.
 
-    def __init__(self, parameter_table=[], user_func=[]):
+    def __init__(self, parameter_table=[], user_func=[], show_ui=True):
         self.parameter_table = parameter_table
         self.IsAlive = False
         self.IsUserFunc = False
@@ -49,7 +54,8 @@ class paramui:
         self.UIWidth = 500
         self.UIMaxHeight = 600
         self.UIYSpace = 45
-
+        self.ShowUI = show_ui
+        
         if user_func:
             self.IsUserFunc = True
         if parameter_table and not user_func:
@@ -128,91 +134,96 @@ class paramui:
     def create_ui(self, parameter_table, UserFunc):
         self.parameter_table = parameter_table
         self.UserFunc = UserFunc
-        self.root = tk.Tk()
-        UIHeight = min(self.UIMaxHeight, len(parameter_table)*self.UIYSpace)
-        self.root.geometry(str(self.UIWidth)+"x"+str(UIHeight))
-        self.root.protocol("WM_DELETE_WINDOW", self.close_ui)
-        self.root.title(self.UIName)
-        sc = self.UIWidth / 500
-        canvas = tk.Canvas(self.root)
-        scrollbar = tk.Scrollbar(
-            self.root, orient="vertical", command=canvas.yview)
-        canvas.configure(yscrollcommand=scrollbar.set)
-        canvas.bind("<MouseWheel>", lambda event: canvas.yview_scroll(
-            int(-1 * (event.delta / 120)), "units"))
-        frame = tk.Frame(canvas)
-        canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        canvas.create_window((0, 0), window=frame, anchor=tk.NW)
-        frame.bind("<Configure>", lambda e: canvas.configure(
-            scrollregion=canvas.bbox("all")))
+        if self.ShowUI:
+            self.root = tk.Tk()
+            UIHeight = min(self.UIMaxHeight, len(parameter_table)*self.UIYSpace)
+            self.root.geometry(str(self.UIWidth)+"x"+str(UIHeight))
+            self.root.protocol("WM_DELETE_WINDOW", self.close_ui)
+            self.root.title(self.UIName)
+            sc = self.UIWidth / 500
+    
+            canvas = tk.Canvas(self.root)
+            scrollbar = tk.Scrollbar(
+                self.root, orient="vertical", command=canvas.yview)
+            canvas.configure(yscrollcommand=scrollbar.set)
+            canvas.bind("<MouseWheel>", lambda event: canvas.yview_scroll(
+                int(-1 * (event.delta / 120)), "units"))
+            frame = tk.Frame(canvas)
+            canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+            scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+            canvas.create_window((0, 0), window=frame, anchor=tk.NW)
+            frame.bind("<Configure>", lambda e: canvas.configure(
+                scrollregion=canvas.bbox("all")))
 
         for i, param in enumerate(self.parameter_table):
             variable, label, initial_value, step = param
             setattr(self.Prm, variable, initial_value)
 
-            row = tk.Frame(frame)
-            UIPadY = int(max((self.UIYSpace-35)/2, 0))
-            row.pack(side=tk.TOP, fill=tk.X, padx=20, pady=UIPadY, expand=True)
-            if not (isinstance(initial_value, list) and not (initial_value)):
-                l = tk.Label(row, text=label, width=int(18*sc), anchor='w')
-                l.pack(side=tk.LEFT, expand=False)
-            if isinstance(initial_value, (int, float)) and isinstance(step, list) and len(step)==3 :
-                min_val, max_val, step_val = step
-                var = tk.DoubleVar(self.root)
-                var.set(initial_value)
-                var2 = tk.DoubleVar(self.root)
-                var2.set(initial_value)
-                slider = tk.Scale(row, variable=var, from_=min_val, to=max_val,
-                                  resolution=step_val, showvalue=0, orient=tk.HORIZONTAL, length=int(160*sc))
-                slider.bind("<ButtonRelease>", lambda event, v=variable, value=var,
-                            spin_var=var2, step=step_val: self.on_slider_change(v, value, spin_var, step))
-                slider.pack(side=tk.LEFT, fill=tk.X)
-
-                spinbox = tk.Spinbox(row, textvariable=var2, from_=min_val,
-                                     to=max_val, increment=step_val, width=int(10*sc))
-                spinbox.config(command=lambda v=variable, value=var2, slider_var=var,
-                               step=step_val: self.on_spinbox_change(v, value, slider_var, step))
-                spinbox.bind("<Return>", lambda event, v=variable, value=var2, slider_var=var,
-                             step=step_val: self.on_spinbox_change(v, value, slider_var, step))
-                spinbox.pack(side=tk.RIGHT, fill=tk.X)
-
-            elif isinstance(initial_value, bool) and not step:
-                var = tk.BooleanVar(self.root)
-                var.set(initial_value)
-                checkbox = tk.Checkbutton(
-                    row, variable=var, command=lambda v=variable, value=var: self.on_checkbox_change(v, value.get()))
-                checkbox.pack(side=tk.LEFT, fill=tk.X, expand=False)
-
-            elif isinstance(initial_value, bool) and step=='button':
-                var = tk.BooleanVar(self.root)
-                var.set(False)
-                button = tk.Button(row, text=label, command=lambda v=variable,
-                                   value=var: self.on_button_change(v, True))
-                button.pack(side=tk.LEFT, fill=tk.X, expand=True)
-
-            elif isinstance(initial_value, str) and not (isinstance(step, list) and len(step) > 1):
-                var = tk.StringVar(self.root)
-                var.set(initial_value)
-                entry = tk.Entry(row, textvariable=var)
-                entry.bind("<Leave>", lambda _, v=variable,
-                           value=var: self.on_entry_change_leave(v, value.get()))
-                entry.bind("<Return>", lambda _, v=variable,
-                           value=var: self.on_entry_change(v, value.get()))
-                entry.pack(side=tk.LEFT, fill=tk.X, expand=True)
-
-                if isinstance(step, str) and re.match('\*\.|folder', step):
-                    browse_button = tk.Button(row, text="Browse",
-                                              command=lambda v=variable, entry_var=var, str=step: self.browse_file(v, entry_var, str))
-                    browse_button.pack(side=tk.RIGHT, padx=(0, 10))
-
-            elif isinstance(step, list) and step:
-                var = tk.StringVar(self.root)
-                var.set(initial_value)
-                dropdown = tk.OptionMenu(row, var,  *step, command=lambda _,
-                                         var=variable, value=var: self.on_dropdown_change(var, value.get()))
-                dropdown.pack(side=tk.LEFT, fill=tk.X, expand=True)
-
+            if self.ShowUI:
+                row = tk.Frame(frame)
+                UIPadY = int(max((self.UIYSpace-35)/2, 0))
+                row.pack(side=tk.TOP, fill=tk.X, padx=20, pady=UIPadY, expand=True)
+                if not (isinstance(initial_value, list) and not (initial_value)):
+                    l = tk.Label(row, text=label, width=int(18*sc), anchor='w')
+                    l.pack(side=tk.LEFT, expand=False)
+                if isinstance(initial_value, (int, float)) and isinstance(step, list) and len(step)==3 :
+                    min_val, max_val, step_val = step
+                    var = tk.DoubleVar(self.root)
+                    var.set(initial_value)
+                    var2 = tk.DoubleVar(self.root)
+                    var2.set(initial_value)
+                    slider = tk.Scale(row, variable=var, from_=min_val, to=max_val,
+                                      resolution=step_val, showvalue=0, orient=tk.HORIZONTAL, length=int(160*sc))
+                    slider.bind("<ButtonRelease>", lambda event, v=variable, value=var,
+                                spin_var=var2, step=step_val: self.on_slider_change(v, value, spin_var, step))
+                    slider.pack(side=tk.LEFT, fill=tk.X)
+    
+                    spinbox = tk.Spinbox(row, textvariable=var2, from_=min_val,
+                                         to=max_val, increment=step_val, width=int(10*sc))
+                    spinbox.config(command=lambda v=variable, value=var2, slider_var=var,
+                                   step=step_val: self.on_spinbox_change(v, value, slider_var, step))
+                    spinbox.bind("<Return>", lambda event, v=variable, value=var2, slider_var=var,
+                                 step=step_val: self.on_spinbox_change(v, value, slider_var, step))
+                    spinbox.pack(side=tk.RIGHT, fill=tk.X)
+    
+                elif isinstance(initial_value, bool) and not step:
+                    var = tk.BooleanVar(self.root)
+                    var.set(initial_value)
+                    checkbox = tk.Checkbutton(
+                        row, variable=var, command=lambda v=variable, value=var: self.on_checkbox_change(v, value.get()))
+                    checkbox.pack(side=tk.LEFT, fill=tk.X, expand=False)
+    
+                elif isinstance(initial_value, bool) and step=='button':
+                    var = tk.BooleanVar(self.root)
+                    var.set(initial_value)
+                    button = tk.Button(row, text=label, command=lambda v=variable,
+                                       value=var: self.on_button_change(v, True))
+                    button.pack(side=tk.LEFT, fill=tk.X, expand=True)
+    
+                elif isinstance(initial_value, str) and not (isinstance(step, list) and len(step) > 1):
+                    var = tk.StringVar(self.root)
+                    var.set(initial_value)
+                    entry = tk.Entry(row, textvariable=var)
+                    entry.bind("<Leave>", lambda _, v=variable,
+                               value=var: self.on_entry_change_leave(v, value.get()))
+                    entry.bind("<Return>", lambda _, v=variable,
+                               value=var: self.on_entry_change(v, value.get()))
+                    entry.pack(side=tk.LEFT, fill=tk.X, expand=True)
+    
+                    if isinstance(step, str) and re.match('\*\.|folder', step):
+                        browse_button = tk.Button(row, text="Browse",
+                                                  command=lambda v=variable, entry_var=var, str=step: self.browse_file(v, entry_var, str))
+                        browse_button.pack(side=tk.RIGHT, padx=(0, 10))
+    
+                elif isinstance(step, list) and step:
+                    var = tk.StringVar(self.root)
+                    var.set(initial_value)
+                    dropdown = tk.OptionMenu(row, var,  *step, command=lambda _,
+                                             var=variable, value=var: self.on_dropdown_change(var, value.get()))
+                    dropdown.pack(side=tk.LEFT, fill=tk.X, expand=True)
+    
         self.UserFunc(self.Prm)
         self.IsAlive = True
-        self.root.mainloop()
+        if self.ShowUI:
+            self.root.mainloop()
+    
