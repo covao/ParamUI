@@ -46,7 +46,7 @@ ParameterTable = [
 ~~~
 ## Example 1: Run on UI event
 ~~~ python
-from paramui import p/caramui
+from paramui import paramui
 def usrfunc(Prm):
     if not Prm.Run:
         return
