@@ -67,7 +67,7 @@ while pu.IsAlive:
 
 ## Example 3:  Do not display UI for debug
 ~~~ python
-from paramui import p/caramui
+from paramui import paramui
 def usrfunc(Prm):
     if not Prm.Run:
         return
