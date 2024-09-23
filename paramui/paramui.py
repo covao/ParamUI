@@ -84,8 +84,10 @@ class paramui:
             return False
 
     def update_parameter(self, variable, value):
-        setattr(self.Prm, variable, value)
-        self.UserFunc(self.Prm)
+        old_value = getattr(self.Prm, variable)
+        if old_value != value:
+            setattr(self.Prm, variable, value)
+            self.UserFunc(self.Prm)
 
     def on_slider_change(self, variable, value, spin_var, step):
         v = float(value.get())
