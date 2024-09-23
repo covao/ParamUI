@@ -184,6 +184,8 @@ class paramui:
                                    step=step_val: self.on_spinbox_change(v, value, slider_var, step))
                     spinbox.bind("<Return>", lambda event, v=variable, value=var2, slider_var=var,
                                  step=step_val: self.on_spinbox_change(v, value, slider_var, step))
+                    spinbox.bind("<Leave>", lambda event, v=variable, value=var2, slider_var=var,
+                                 step=step_val: self.on_spinbox_change_leave(v, value, slider_var, step))
                     spinbox.pack(side=tk.RIGHT, fill=tk.X)
     
                 elif isinstance(initial_value, bool) and not step:
@@ -205,7 +207,7 @@ class paramui:
                     var.set(initial_value)
                     entry = tk.Entry(row, textvariable=var)
                     entry.bind("<Leave>", lambda _, v=variable,
-                               value=var: self.on_entry_change_leave(v, value.get()))
+                               value=var: self.on_entry_change(v, value.get()))
                     entry.bind("<Return>", lambda _, v=variable,
                                value=var: self.on_entry_change(v, value.get()))
                     entry.pack(side=tk.LEFT, fill=tk.X, expand=True)
