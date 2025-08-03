@@ -8,6 +8,7 @@ ParamUI is a Python framework for easy parameter management and GUI creation. It
 - Parameters are mapped to a nested Prm structure
 - Tree navigation using path syntax
 - Supports slider, selector, button, checkbox, file browser, and textbox widgets
+- Scrollable UI for large parameter sets
 - Headless mode is supported for testing without a GUI
 
 ## 📦 Installation
@@ -23,7 +24,7 @@ Download [paramui.py](./paramui/paramui.py) and place it in your project directo
 pip uninstall paramui
 ```
 
-## Example
+## 📋 Example
 ~~~python
 from paramui import paramui
 import time
@@ -73,4 +74,9 @@ ParameterTable = [
 - update_prm(): Synchronize UI values to Prm structure.
 - Prm: Nested parameter structure.
 - IsAlive: True if the UI is running.
+
+## 🎬 Demonstrations
+- [Hello World](./example/hello_world.py)
+- [Life game simulation](./example/lifegame_paramui.py)
+- [Mandelbrot set generation](./example/mandelbrot_paramui.py)
 
