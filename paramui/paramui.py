@@ -704,8 +704,8 @@ class paramui:
     Usage Example:
     ```python
     ParameterTable = [
-        ['A1', 'Num 1', 0.5, [0, 1, 0.1]],
-        ['Options/Flag', 'Flag 1', True, []],
+        ['A1', 'Num A1', 0.5, [0, 1, 0.1]],
+        ['Options/Flag1', 'Flag 1', True, []],
         ['Run', 'Run!', False, 'button']
     ]
     pu = paramui(ParameterTable)
@@ -755,11 +755,11 @@ class paramui:
                 # Use variable name as widget path for direct access compatibility
                 parts = variable.split('/')
                 if len(parts) > 1:
-                    # For nested paths like 'Options/Flag', use full variable path
-                    widget_path = variable
+                    # For nested paths like 'Options/Flag', use variable path but with ParameterLabel
+                    widget_path = '/'.join(parts[:-1]) + '/' + label
                 else:
-                    # For root level like 'Run', use variable name directly
-                    widget_path = variable
+                    # For root level like 'Run', use ParameterLabel directly
+                    widget_path = label
                 self.widget_paths[variable] = widget_path
                 
                 # Create appropriate widget based on parameter type
@@ -914,11 +914,11 @@ if __name__ == "__main__":
 
     # Example parameter table
     ParameterTable = [
-        ['A1','Num 1',0.5, [0, 1, 0.1]], # A1: pu.Prm.A1
-        ['Options/Flag','Flag 1',True,[]], # Options/Flag: pu.Prm.Options.Flag
-        ['Run','Run!',False,'button'], # Run: pu.Prm.Run
-        ['Options/Select','Select 1','Two',['One','Two','Three']], # Options/Select: pu.Prm.Options.Select
-        ['Name','Name 1','Taro',[]] # pu.Prm.Person.Name
+        ['A1','Num A1',0.5, [0, 1, 0.1]], # pu.Prm.A1
+        ['Options/Flag1','Flag 1',True,[]], # pu.Prm.Options.Flag1
+        ['Run','Run!',False,'button'], # pu.Prm.Run
+        ['Options/Select1','Select 1','Two',['One','Two','Three']], # pu.Prm.Options.Select1
+        ['Name1','Name 1','Taro',[]] # pu.Prm.Name1
     ]
     
     # Create paramui instance
@@ -928,6 +928,6 @@ if __name__ == "__main__":
         if  pu.Prm.Run:  # If Run button is pressed
             print("Run button pressed!")
             pu.Prm.Run = False  # Reset button state of the Prm Variable
-            print(f"Name:", pu.Prm.Name, "Options/Flag:", pu.Prm.Options.Flag, "A1:", pu.Prm.A1)
-        time.sleep(0.1)
+            print(f"Name:", pu.Prm.Name1, ", Options/Flag:", pu.Prm.Options.Flag1, ", Options/Select:", pu.Prm.Options.Select1, ", A1:", pu.Prm.A1)
+        time.sleep(0.1) # Prevent busy-waiting
     print("paramui finished.")
