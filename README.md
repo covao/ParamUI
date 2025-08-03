@@ -28,15 +28,14 @@ pip uninstall paramui
 ~~~python
 from paramui import paramui
 import time
-
-    # Example parameter table
-    ParameterTable = [
-        ['A1','Num 1',0.5, [0, 1, 0.1]], # A1: pu.Prm.A1
-        ['Options/Flag','Flag 1',True,[]], # Options/Flag: pu.Prm.Options.Flag
-        ['Run','Run!',False,'button'], # Run: pu.Prm.Run
-        ['Options/Select','Select 1','Two',['One','Two','Three']], # Options/Select: pu.Prm.Options.Select
-        ['Name','Name 1','Taro',[]] # pu.Prm.Person.Name
-    ]
+# Example parameter table
+ParameterTable = [
+    ['A1','Num A1',0.5, [0, 1, 0.1]], # pu.Prm.A1
+    ['Options/Flag1','Flag 1',True,[]], # pu.Prm.Options.Flag1
+    ['Run','Run!',False,'button'], # pu.Prm.Run
+    ['Options/Select1','Select 1','Two',['One','Two','Three']], # pu.Prm.Options.Select1
+    ['Name1','Name 1','Taro',[]] # pu.Prm.Name1
+]
 
 # Create paramui instance
 pu = paramui(ParameterTable)
@@ -45,8 +44,8 @@ while pu.IsAlive:
     if  pu.Prm.Run:  # If Run button is pressed
         print("Run button pressed!")
         pu.Prm.Run = False  # Reset button state of the Prm Variable
-        print(f"Name:", pu.Prm.Name, "Options/Flag:", pu.Prm.Options.Flag, "A1:", pu.Prm.A1)
-    time.sleep(0.1)
+        print(f"Name:", pu.Prm.Name1, ", Options/Flag:", pu.Prm.Options.Flag1, ", Options/Select:", pu.Prm.Options.Select1, ", A1:", pu.Prm.A1)
+    time.sleep(0.1) # Prevent busy-waiting
 print("paramui finished.")
 ~~~
 
@@ -62,8 +61,8 @@ ParameterTable = [
     ['Run', 'Run!', False, 'button'],  # Button
     ['Flag', 'Flag 1', True, []],  # Checkbox
     ['Text', 'Text Input', 'ABC', []],  # Textbox
-    ['File', 'File Path', '*.txt', 'file'],  # File browser
-    ['Selector', 'Select Option', 'Option1', ['Option1', 'Option2', 'Option3']],  # Selector with options
+    ['Options/File', 'File Path', '*.txt', 'file'],  # File browser
+    ['Options/Selector', 'Select Option', 'Option1', ['Option1', 'Option2', 'Option3']],  # Selector with options
     # Add more parameters as needed
 ]
 ```
