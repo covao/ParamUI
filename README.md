@@ -4,6 +4,7 @@ ParamUI is a Python framework for easy parameter management and GUI creation. It
 
 ## ✨ Features
 - Auto-generates GUI from Parameter Table
+- Easy generation of the GUI using LLMs such as ChatGPT
 - Parameters are mapped to a nested Prm structure
 - Tree navigation using path syntax
 - Supports slider, selector, button, checkbox, file browser, and textbox widgets
@@ -27,24 +28,24 @@ pip uninstall paramui
 from paramui import paramui
 import time
 
-    ParameterTable = [
-        ['A1','Num 1',0.5, [0, 1, 0.1]],                    # A1: pu.Prm.A1
-        ['Options/Flag','Flag 1',True,[]],                 # Options/Flag: pu.Prm.Settings.Flag  
-        ['Run','Run!',False,'button'],                      # Run: pu.Prm.Run
-        ['Options/Select','Select 1','Two',['One','Two','Three']], # Options/Select: pu.Prm.Options.Select
-        ['Name','Name 1','Taro',[]]                  # Name: pu.Prm.Person.Name
-    ]
-    
-    # Create paramui instance
-    pu = paramui(ParameterTable)
-    while pu.IsAlive:
-        pu.update_prm()  # Update Prm Variables from UI
-        if  pu.Prm.Run:  # If Run button is pressed
-            print("Run button pressed!")
-            pu.Prm.Run = False  # Reset button state of the Prm Variable
-            print(f"Name:", pu.Prm.Name, "Options/Flag:", pu.Prm.Options.Flag, "A1:", pu.Prm.A1)
-        time.sleep(0.1)
-    print("paramui finished.")
+ParameterTable = [
+    ['A1','Num 1',0.5, [0, 1, 0.1]],                    # A1: pu.Prm.A1
+    ['Options/Flag','Flag 1',True,[]],                 # Options/Flag: pu.Prm.Settings.Flag  
+    ['Run','Run!',False,'button'],                      # Run: pu.Prm.Run
+    ['Options/Select','Select 1','Two',['One','Two','Three']], # Options/Select: pu.Prm.Options.Select
+    ['Name','Name 1','Taro',[]]                  # Name: pu.Prm.Person.Name
+]
+
+# Create paramui instance
+pu = paramui(ParameterTable)
+while pu.IsAlive:
+    pu.update_prm()  # Update Prm Variables from UI
+    if  pu.Prm.Run:  # If Run button is pressed
+        print("Run button pressed!")
+        pu.Prm.Run = False  # Reset button state of the Prm Variable
+        print(f"Name:", pu.Prm.Name, "Options/Flag:", pu.Prm.Options.Flag, "A1:", pu.Prm.A1)
+    time.sleep(0.1)
+print("paramui finished.")
 ~~~
 
 ![ParamUI Example](./paramui_example.gif)
@@ -71,5 +72,4 @@ ParameterTable = [
 - update_prm(): Synchronize UI values to Prm structure.
 - Prm: Nested parameter structure.
 - IsAlive: True if the UI is running.
-
 
