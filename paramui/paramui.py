@@ -70,6 +70,7 @@ class chibiui:
             self.thread.start()
             while not self.alive:
                 pass
+            time.sleep(0.2)
         else:
             self.alive = True
 
@@ -790,28 +791,10 @@ class paramui:
                     self.ui.add_textbox(widget_path, str(initial_value))
 
             # UI is now ready
-            
-            # Validate all parameters after initialization
-            """
-            validation_result = self._validate_all_parameters()
-            if not validation_result['valid']:
-                print("Parameter validation warnings during initialization:")
-                for error in validation_result['errors']:
-                    print(f"  - {error}")
-            """
         elif parameter_table:
             # Initialize parameters without UI
             self._init_parameters_only(parameter_table)
             
-            # Validate all parameters after initialization
-            """
-            validation_result = self._validate_all_parameters()
-            if not validation_result['valid']:
-                print("Parameter validation warnings during initialization:")
-                for error in validation_result['errors']:
-                    print(f"  - {error}")
-            """
-                    
         self.IsAlive = True  # Initialize IsAlive property
 
     def __del__(self):
