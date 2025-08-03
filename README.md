@@ -28,11 +28,11 @@ from paramui import paramui
 import time
 
     ParameterTable = [
-        ['A1','Num 1',0.5, [0, 1, 0.1]],                    # Root level: pu.Prm.A1
-        ['Options/Flag','Flag 1',True,[]],                 # Settings/Flag: pu.Prm.Settings.Flag  
-        ['Run','Run!',False,'button'],                      # Root level: pu.Prm.Run
+        ['A1','Num 1',0.5, [0, 1, 0.1]],                    # A1: pu.Prm.A1
+        ['Options/Flag','Flag 1',True,[]],                 # Options/Flag: pu.Prm.Settings.Flag  
+        ['Run','Run!',False,'button'],                      # Run: pu.Prm.Run
         ['Options/Select','Select 1','Two',['One','Two','Three']], # Options/Select: pu.Prm.Options.Select
-        ['Name','Name 1','Taro',[]]                  # Person/Name: pu.Prm.Person.Name
+        ['Name','Name 1','Taro',[]]                  # Name: pu.Prm.Person.Name
     ]
     
     # Create paramui instance
@@ -71,4 +71,5 @@ ParameterTable = [
 - update_prm(): Synchronize UI values to Prm structure.
 - Prm: Nested parameter structure.
 - IsAlive: True if the UI is running.
+
 
