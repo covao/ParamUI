@@ -1,94 +1,74 @@
-[Japanese(Google Translate)](https://github-com.translate.goog/covao/ParamUI?_x_tr_sl=en&_x_tr_tl=ja&_x_tr_hl=ja&_x_tr_pto=wapp)
+# ParamUI
 
-# ParamUI Python  
-- Create App with UI from simple parameter table
-- Easy code generation using ChatGPT
+ParamUI is a Python framework for easy parameter management and GUI creation. It automatically generates a Tkinter-based GUI from a ParameterTable and synchronizes values with a nested Prm structure.
 
-# Instalation
-## Method 1
-- Install library in python environment
-~~~
+## ✨ Features
+- Auto-generates GUI from Parameter Table
+- Parameters are mapped to a nested Prm structure
+- Tree navigation using path syntax
+- Supports slider, selector, button, checkbox, file browser, and textbox widgets
+- Headless mode is supported for testing without a GUI
+
+## 📦 Installation
+### Method 1: Install using pip:
+```bash
 pip install git+https://github.com/covao/ParamUI
+```
+### Method 2: Download the source code
+Download [paramui.py](./paramui/paramui.py) and place it in your project directory
 
-~~~
-## Method 2
-- Download [paramui.py](./paramui/paramui.py) and copy to the folder where you run the python script 
+## Uninstall
+```bash
+pip uninstall paramui
+```
 
-# Usage
-## Parameter table definition
-Parameter table is containing the following columns  
-- Prameter Variable
-- Parameter Label
-- Initial Value
-- Range  
-  - Slider: [Min, Max, Step]  
-  - Check Box: []  
-  - Selecter: ['A','B']  
-  - Edit Box: []  
-  - File Selecter: '\*.txt;\*.doc' 
-  - Folder Selecter: 'folder'  
-  - Button: 'button'  
-~~~ python
-ParameterTable = [
-    ['A', 'Parameter A', 0.5, [0, 1, 0.1]],
-    ['B', 'Parameter B This is a pen', 200, [100, 500, 10]],
-    ['F1', 'Flag 1', True, []],
-    ['F2', 'Flag 2', False, []],
-    ['S1', 'Select 1', 'Two', ['One', 'Two', 'Three']],
-    ['S2', 'Select 2', 'Three', ['One', 'Two', 'Three']],
-    ['Name1', 'Name 1', 'Taro', []],
-    ['Name2', 'Name 2', 'Jiro', []],
-    ['File1', 'File 1', '', '*.py;*.txt'],
-    ['Folder1', 'Folder 1', '', 'folder'],
-    ['Run', 'Run!', False, 'button'],
-]
-
-~~~
-## Example 1: Run on UI event
-~~~ python
-from paramui import paramui
-def usrfunc(Prm):
-    if not Prm.Run:
-        return
-    print(Prm)
-paramui(ParameterTable, usrfunc)
-
-~~~
-## Example 2: Loop & Get Parameters
-~~~ python
+## Example
+~~~python
 from paramui import paramui
 import time
-pu = paramui(ParameterTable)
-while pu.IsAlive:
-    print(pu.Prm)
-    time.sleep(0.5)
+
+    ParameterTable = [
+        ['A1','Num 1',0.5, [0, 1, 0.1]],                    # Root level: pu.Prm.A1
+        ['Options/Flag','Flag 1',True,[]],                 # Settings/Flag: pu.Prm.Settings.Flag  
+        ['Run','Run!',False,'button'],                      # Root level: pu.Prm.Run
+        ['Options/Select','Select 1','Two',['One','Two','Three']], # Options/Select: pu.Prm.Options.Select
+        ['Name','Name 1','Taro',[]]                  # Person/Name: pu.Prm.Person.Name
+    ]
     
+    # Create paramui instance
+    pu = paramui(ParameterTable)
+    while pu.IsAlive:
+        pu.update_prm()  # Update Prm Variables from UI
+        if  pu.Prm.Run:  # If Run button is pressed
+            print("Run button pressed!")
+            pu.Prm.Run = False  # Reset button state of the Prm Variable
+            print(f"Name:", pu.Prm.Name, "Options/Flag:", pu.Prm.Options.Flag, "A1:", pu.Prm.A1)
+        time.sleep(0.1)
+    print("paramui finished.")
 ~~~
 
-## Example 3:  Do not display UI for debug
-~~~ python
-from paramui import paramui
-def usrfunc(Prm):
-    if not Prm.Run:
-        return
-    print(Prm)
-paramui(ParameterTable, usrfunc, False)
+![ParamUI Example](./paramui_example.gif)
 
-~~~
-
-## Hello ParamUI
-- [hello_paramui.py](./example/hello_paramui.py)  
-![Hello ParamUI](./img/hello_paramui.jpg)
-
-# [ParamUI Prompt Designer](https://covao.github.io/ParamUI/html/paramui_prompt_designer.html)
-- Generate prompt of UI app using LLM
-Try prompt! e.g. ChatGPT, Bing Chat, Bard  
-[Start ParamUI Prompt Designer](https://covao.github.io/ParamUI/html/paramui_prompt_designer.html)
-
-# Demo
-- [Lifegame](./example/lifegame_paramui.py)
-- [Mandelblot](./example/mandelbrot_paramui.py)
-
-# Related Sites
-- [ParamUI MATLAB](https://github.com/covao/ParamUI_MATLAB)
+## Parameter Table Structure
+The "Parameter Table" is a list of lists, where each inner list defines a parameter:
+- 'Path of parameter', 'Display Name', Default_value, Range or options
+- Example:
+```python
+ParameterTable = [
+    ['A1', 'Num 1', 0.5, [0, 1, 0.1]],  # Slider with range [min, max, step]
+    ['Run', 'Run!', False, 'button'],  # Button
+    ['Flag', 'Flag 1', True, []],  # Checkbox
+    ['Text', 'Text Input', 'ABC', 'text'],  # Textbox
+    ['File', 'File Path', '*.txt', 'file'],  # File browser
+    ['Selector', 'Select Option', 'Option1', ['Option1', 'Option2', 'Option3']],  # Selector with options
+    # Add more parameters as needed
+]
+```
+ 
+## API Reference
+- paramui(parameter_table, show_ui=True): Create the parameter UI and structure. If `show_ui` is False, runs in headless mode.
+- close_ui(): Close the UI window.
+- update_prm(): Synchronize UI values to Prm structure.
+- Prm: Nested parameter structure.
+- IsAlive: True if the UI is running.
 

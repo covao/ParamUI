@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='paramui',
-    version='0.9.0',
+    version='2.0.0',
     author='covao, Koichi Koabayshi',
     license='MIT',
     author_email='',
