@@ -19,7 +19,7 @@ pip install git+https://github.com/covao/ParamUI
 ### Method 2: Download the source code
 Download [paramui.py](./paramui/paramui.py) and place it in your project directory
 
-## Uninstall
+### Uninstall
 ```bash
 pip uninstall paramui
 ```
@@ -53,8 +53,8 @@ print("paramui finished.")
 ![ParamUI Example](./paramui_example.gif)
 
 ## Parameter Table Structure
-The "Parameter Table" is a list of lists, where each inner list defines a parameter:
-- 'Path of parameter', 'Display Name', Default_value, Range or options
+"Parameter Table" is a list that manages parameters to be displayed in the UI.
+ - 'Path of parameter', 'Display Name', Default_value, Range or options
 - Example:
 ```python
 ParameterTable = [
