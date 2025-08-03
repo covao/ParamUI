@@ -1,25 +1,38 @@
-# Hello ParamUI
+"""
+Simple ParamUI example.
+Demonstrates hierarchical parameters, flags, selectors, file/folder selection, and a run button.
+"""
+
+import time
 from paramui import paramui
 
+# Parameter table for ParamUI
 ParameterTable = [
-    ['A', 'Parameter A', 0.5, [0, 1, 0.1]],
-    ['B', 'Parameter B', 200, [100, 500, 10]],
-    ['F1', 'Flag 1', True, []],
-    ['F2', 'Flag 2', False, []],
-    ['S1', 'Select 1', 'Two', ['One', 'Two', 'Three']],
-    ['S2', 'Select 2', 'Three', ['One', 'Two', 'Three']],
-    ['Name1', 'Name 1', 'Taro', []],
-    ['Name2', 'Name 2', 'Jiro', []],
-    ['File1', 'File 1', '', '*.py;*.txt'],
-    ['Folder1', 'Folder 1', '', 'folder'],
-    ['Run', 'Run!', False, 'button'],
+    ['Config/Threshold', 'Threshold', 0.7, [0, 1, 0.01]],           # numeric (hierarchical)
+    ['Config/MaxCount', 'Max Count', 100, [10, 500, 10]],           # numeric (hierarchical)
+    ['Flags/Enable', 'Enable', True, []],                           # flag (hierarchical)
+    ['Flags/Debug', 'Debug Mode', False, []],                       # flag (hierarchical)
+    ['Options/Mode', 'Mode', 'Auto', ['Auto', 'Manual', 'Test']],   # selector (hierarchical)
+    ['Files/Input', 'Input File', '', '*.csv;*.txt'],               # file (hierarchical)
+    ['Files/Output', 'Output Folder', '', 'folder'],                # folder (hierarchical)
+    ['Run', 'Run!', False, 'button'],                               # run button
 ]
 
-#Define user function
 def UsrFunc(Prm):
-  if not Prm.Run:
-    return
-  print(Prm)
+    """
+    User function called when Run button is pressed.
+    Prints the current parameter values.
+    """
+    if not Prm.Run:
+        return
+    print(Prm)
 
-# Parameter display when Run button is clicked
-paramui(ParameterTable, UsrFunc)
+pu = paramui(ParameterTable)
+
+# Main loop: update parameters and call user function when Run is pressed
+while pu.IsAlive:
+    pu.update_prm()
+    if pu.Prm.Run:
+        UsrFunc(pu.Prm)
+        pu.Prm.Run = False
+    time.sleep(0.1)

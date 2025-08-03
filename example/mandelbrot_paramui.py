@@ -1,42 +1,69 @@
+"""
+Mandelbrot set interactive visualizer using paramui and matplotlib.
+Allows real-time parameter adjustment and redraw via a button.
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
+import time
 from paramui import paramui
 
 def mandelbrot(c, exponent, max_iter):
+    """
+    Calculate the number of iterations for a complex point c to escape the Mandelbrot set.
+    """
     z = c
-    for n in range(max_iter):
+    for n in range(int(max_iter)):
         if abs(z) > 2:
             return n
         z = z ** exponent + c
-    return max_iter
+    return int(max_iter)
 
-def mandelbrot_set(exponent, max_iter, image_size, colormap):
-    width, height = image_size
+def update_display(Prm):
+    """
+    Redraw the Mandelbrot set image using current parameters.
+    """
+    plt.clf()
+    resolution = int(Prm.resolution)
+    width, height = resolution, resolution  
     xmin, xmax, ymin, ymax = -2.5, 1.5, -2, 2
     x = np.linspace(xmin, xmax, width)
     y = np.linspace(ymin, ymax, height)
     img = np.zeros((height, width))
-
+    # Calculate Mandelbrot values for each pixel
     for i in range(height):
         for j in range(width):
             c = x[j] + 1j * y[i]
-            img[i, j] = mandelbrot(c, exponent, max_iter)
+            img[i, j] = mandelbrot(c, Prm.exponent, Prm.iteration)
+    plt.imshow(img, cmap=Prm.colormap, extent=(xmin, xmax, ymin, ymax))
 
-    plt.imshow(img, cmap=colormap, extent=(xmin, xmax, ymin, ymax))
-    plt.pause(0.1)
-    plt.show()
 
-def update_display(Prm):
-    plt.clf()
-    mandelbrot_set(Prm.exponent, Prm.iteration, (Prm.width, Prm.height), Prm.colormap)
 
+# Parameter table for paramui
 parameter_table = [
     ['exponent', 'Exponent', 2, [0.1, 10, 0.1]],
-    ['iteration', 'Iteration', 10, [1, 100, 1]],
+    ['iteration', 'Iteration', 10, [1, 30, 1]],
     ['colormap', 'Colormap', 'inferno',  ['inferno', 'plasma', 'viridis', 'magma']],
-    ['width', 'Image Width', 200, [100, 1000, 100]],
-    ['height', 'Image Height', 200, [100, 1000, 100]],
+    ['resolution', 'Image Resolution', 200, [50, 1000, 50]], 
+    ['draw', 'Draw', False, 'button'],  # add button
 ]
 
-paramui(parameter_table, update_display)
+pu = paramui(parameter_table)
+
+fig = plt.figure()
+plt.ion()
+plt.show()
+update_display(pu.Prm)
+
+# Main loop: update parameters and redraw when requested
+while pu.IsAlive and plt.get_fignums():
+    pu.update_prm()
+    if pu.Prm.draw:  # draw when the draw button is pressed
+        update_display(pu.Prm)
+        pu.Prm.draw = False  # reset button state
+        
+    fig.canvas.draw()    
+    fig.canvas.flush_events()
+
+    time.sleep(0.1)
 
