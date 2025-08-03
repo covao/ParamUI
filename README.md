@@ -60,7 +60,7 @@ ParameterTable = [
     ['A1', 'Num 1', 0.5, [0, 1, 0.1]],  # Slider with range [min, max, step]
     ['Run', 'Run!', False, 'button'],  # Button
     ['Flag', 'Flag 1', True, []],  # Checkbox
-    ['Text', 'Text Input', 'ABC', 'text'],  # Textbox
+    ['Text', 'Text Input', 'ABC', []],  # Textbox
     ['File', 'File Path', '*.txt', 'file'],  # File browser
     ['Selector', 'Select Option', 'Option1', ['Option1', 'Option2', 'Option3']],  # Selector with options
     # Add more parameters as needed
