@@ -93,7 +93,7 @@ not needed, so it is automatically minimized to the left edge of the window.
 - IsAlive: True if the UI is running.
 
 ## 🎬 Demonstrations
-- [Hello World](./example/hello_world.py)
+- [Hello World](./example/hello_paramui.py)
 - [Life game simulation](./example/lifegame_paramui.py)
 - [Mandelbrot set generation](./example/mandelbrot_paramui.py)
 
