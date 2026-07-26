@@ -23,7 +23,7 @@ ParamUI is a Python framework for easy parameter management and GUI creation. It
 wget https://raw.githubusercontent.com/covao/ParamUI/main/paramui.py
 ```
 ### Method 2: Download the source code
-Download [paramui.py](./paramui/paramui.py) and place it in your project directory
+Download [paramui.py](./paramui.py) and place it in your project directory
 
 ### Uninstall
 Delete `paramui.py` from your project directory.
